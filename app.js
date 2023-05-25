@@ -2,7 +2,7 @@ const { createCanvas } = require("canvas");
 const fs = require("fs");
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 80
 
 app.get('/results/:param1/:param2/:param3/:param4/:param5/:param6/:param7/:param8/:param9/:param10', (req, res) => {
 
