@@ -97,34 +97,34 @@ app.get('/', (req, res) => {
   <h1>PVQ Sample</h1>
   <form>
     <label for="pvq1">PVQ 1:</label>
-    <input type="number" name="pvq1" id="pvq1" required><br>
+    <input type="number" name="pvq1" id="pvq1" min="0" max="100" required><br>
 
     <label for="pvq2">PVQ 2:</label>
-    <input type="number" name="pvq2" id="pvq2" required><br>
+    <input type="number" name="pvq2" id="pvq2" min="0" max="100" required><br>
 
     <label for="pvq3">PVQ 3:</label>
-    <input type="number" name="pvq3" id="pvq3" required><br>
+    <input type="number" name="pvq3" id="pvq3" min="0" max="100" required><br>
 
     <label for="pvq4">PVQ 4:</label>
-    <input type="number" name="pvq4" id="pvq4" required><br>
+    <input type="number" name="pvq4" id="pvq4" min="0" max="100" required><br>
 
     <label for="pvq5">PVQ 5:</label>
-    <input type="number" name="pvq5" id="pvq5" required><br>
+    <input type="number" name="pvq5" id="pvq5" min="0" max="100" required><br>
 
     <label for="pvq6">PVQ 6:</label>
-    <input type="number" name="pvq6" id="pvq6" required><br>
+    <input type="number" name="pvq6" id="pvq6" min="0" max="100" required><br>
 
     <label for="pvq7">PVQ 7:</label>
-    <input type="number" name="pvq7" id="pvq7" required><br>
+    <input type="number" name="pvq7" id="pvq7" min="0" max="100" required><br>
 
     <label for="pvq8">PVQ 8:</label>
-    <input type="number" name="pvq8" id="pvq8" required><br>
+    <input type="number" name="pvq8" id="pvq8" min="0" max="100" required><br>
       
           <label for="pvq9">PVQ 9:</label>
-          <input type="number" name="pvq9" id="pvq9" required><br>
+          <input type="number" name="pvq9" id="pvq9" min="0" max="100" required><br>
       
           <label for="pvq10">PVQ 10:</label>
-          <input type="number" name="pvq10" id="pvq10" required><br>
+          <input type="number" name="pvq10" id="pvq10" min="0" max="100" required><br>
           <br>
           <button type="submit">Submit</button>
         </form>
