@@ -1,4 +1,4 @@
-const { createCanvas } = require("canvas");
+const { createCanvas, loadImage  } = require("canvas");
 const fs = require("fs");
 const express = require('express')
 const app = express()
@@ -146,21 +146,43 @@ function generateSvg(inputs) {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
 
-  slice(0, '#DC594F', inputs[0])
-  slice(1, '#A652BB', inputs[1])
-  slice(2, '#0281BE', inputs[2])
-  slice(3, '#07C099', inputs[3])
-  slice(4, '#FAC302', inputs[4])
-  slice(5, '#F47802', inputs[5])
-  slice(6, '#A652BB', inputs[6])
-  slice(7, '#FACF00', inputs[7])
-  slice(8, '#233748', inputs[8])
-  slice(9, '#6D7D7D', inputs[9])
+  slice(0, '#FF6CA2', inputs[0])
+  slice(1, '#A1B5C0', inputs[1])
+  slice(2, '#F99C73', inputs[2])
+  slice(3, '#B877D5', inputs[3])
+  slice(4, '#60CBFF', inputs[4])
+  slice(5, '#233748', inputs[5])
+  slice(6, '#FFD766', inputs[6])
+  slice(7, '#49D7BD', inputs[7])
+  slice(8, '#F9ABA7', inputs[8])
+  slice(9, '#6C9DFC', inputs[9])
 
+  // #FFB3D1 (Cotton Candy Pink)
+  // #AEC6CF (Minty Blue)
+  // #FFD8B1 (Peach Sorbet)
+  // #D5A6BD (Lavender Mist)
+  // #B3E6E6 (Baby Blue)
+  // #FFCC99 (Apricot)
+  // #C7E0B8 (Pistachio)
+  // #F2C6DE (Bubblegum)
+  // #FFEDB3 (Buttercream)
+  // #D9C6E1 (Lilac)
+
+  // #FF88AA
+  // #7EDDEA
+  // #FF9F6B
+  // #6D7D7D
+  // #87DFFF
+  // #233748
+  // #9DE99E
+  // #F77AC0
+  // #FFDC6B
+  // #B993DA
 
   function slice(index, colour, score) {
 
     let radius = ((score/100) * (size/2 - 10));;
+    let maxRadius = (size/2 - 10);;
     let counterClockwise = false;
     let startAngleBlue = ((index-1) / 10) * Math.PI * 2;
     let endAngleBlue = (index / 10) * Math.PI * 2;
@@ -171,11 +193,56 @@ function generateSvg(inputs) {
     ctx.closePath();
     ctx.fillStyle = colour;
     ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius - 20, startAngleBlue, endAngleBlue, counterClockwise);
+    ctx.closePath();
+    
+    // ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    // ctx.fill();
+    
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // Set outline color to black
+    ctx.lineWidth = 2; // Set outline thickness
+    
+    ctx.beginPath();
+    if (index % 2 == 0) {ctx.arc(centerX, centerY, radius + 20, startAngleBlue, endAngleBlue, counterClockwise);}
+    else {ctx.arc(centerX, centerY, radius - 20, startAngleBlue, endAngleBlue, counterClockwise);}
+    ctx.setLineDash([5, 3]);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, maxRadius, startAngleBlue, endAngleBlue, counterClockwise);
+    ctx.closePath();
+    // ctx.setLineDash([1, 0]);
+    // ctx.strokeStyle = 'lightgrey';
+    // ctx.lineWidth = size/200;
+    // ctx.stroke();
+
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, radius, startAngleBlue, endAngleBlue, counterClockwise);
+    ctx.closePath();
     ctx.strokeStyle = 'white';
     ctx.lineWidth = size/200;
+    ctx.setLineDash([1, 0]);
     ctx.stroke();
 
+
   }
+
+  ctx.fillStyle = 'black'; // Set the fill color to white
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = 3;
+  ctx.setLineDash([1, 0]);
+  ctx.stroke();
+
 
   const svg = canvas.toBuffer("image/svg+xml");
   return svg
