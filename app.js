@@ -10,8 +10,36 @@ app.get('/results/:param1/:param2/:param3/:param4/:param5/:param6/:param7/:param
 
   const svg = generateSvg(inputs);
 
-  res.set('Content-Type', 'image/svg+xml');
-  res.send(svg);
+  // res.set('Content-Type', 'image/svg+xml');
+  res.send(`
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVQ Retult</title>
+</head>
+<body>
+${svg}
+</body>
+</html>
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+    }
+</style>
+`);
 
 });
 
@@ -162,40 +190,54 @@ function generateSvg(inputs) {
   slice(8, '#F9ABA7', parseInt(inputs[8]))
   slice(9, '#6C9DFC', parseInt(inputs[9]))
 
+  userLines(0)
+  userLines(1)
+  userLines(2)
+  userLines(3)
+  userLines(4)
+  userLines(5)
+  userLines(6)
+  userLines(7)
+  userLines(8)
+  userLines(9)
+
+
   function slice(index, colour, score) {
     let radius = ((score/100) * ((size - (2*innerRadius))/2)) + innerRadius;
     let maxRadius = (size/2 - 10);;
     let counterClockwise = false;
-    let startAngleBlue = ((index-1) / 10) * Math.PI * 2;
-    let endAngleBlue = (index / 10) * Math.PI * 2;
+    let startAngle = ((index-1) / 10) * Math.PI * 2;
+    let endAngle = (index / 10) * Math.PI * 2;
 
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, startAngleBlue, endAngleBlue, counterClockwise);
-    ctx.arc(centerX, centerY, innerRadius, endAngleBlue, startAngleBlue, !counterClockwise);
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle, counterClockwise);
+    ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, !counterClockwise);
     ctx.closePath();
     ctx.fillStyle = colour;
     ctx.fill();
 
     // ctx.beginPath();
     // ctx.moveTo(centerX, centerY);
-    // ctx.arc(centerX, centerY, radius, startAngleBlue, endAngleBlue, counterClockwise);
+    // ctx.arc(centerX, centerY, radius, startAngle, endAngle, counterClockwise);
     // ctx.closePath();
     
     // ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     // ctx.fill();
     
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // Set outline color to black
-    ctx.lineWidth = 2; // Set outline thickness
+    // ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)'; // Set outline color to black
+    // ctx.lineWidth = 2; // Set outline thickness
     
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, (((randomScore()/100) * ((size - (2*innerRadius))/2)) + innerRadius), startAngleBlue, endAngleBlue, counterClockwise);
-    ctx.setLineDash([5, 3]);
-    ctx.stroke();
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.arc(centerX, centerY, (((randomScore()/100) * ((size - (2*innerRadius))/2)) + innerRadius), startAngle, endAngle, counterClockwise);
+    // ctx.setLineDash([5, 3]);
+    // ctx.stroke();
+    // ctx.closePath();
+
+    
 
     // ctx.beginPath();
     // ctx.moveTo(centerX, centerY);
-    // ctx.arc(centerX, centerY, maxRadius, startAngleBlue, endAngleBlue, counterClockwise);
+    // ctx.arc(centerX, centerY, maxRadius, startAngle, endAngle, counterClockwise);
     // ctx.closePath();
     // ctx.setLineDash([1, 0]);
     // ctx.strokeStyle = 'lightgrey';
@@ -204,21 +246,79 @@ function generateSvg(inputs) {
 
 
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, radius, startAngleBlue, endAngleBlue, counterClockwise);
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle, counterClockwise);
+    ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, !counterClockwise);
     ctx.closePath();
+    ctx.setLineDash([1, 0]);
     ctx.strokeStyle = 'white';
     ctx.lineWidth = size/200;
-    ctx.setLineDash([1, 0]);
     ctx.stroke();
 
 
   }
 
+  function userLines(index) {
+
+    let counterClockwise = false;
+    let startAngle = ((index-1) / 10) * Math.PI * 2;
+    let endAngle = (index / 10) * Math.PI * 2;
+
+
+    let randomRadius = (((randomScore()/100) * ((size - (2*innerRadius))/2)) + innerRadius)
+
+    ctx.beginPath();
+    // ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, randomRadius, startAngle, endAngle, counterClockwise);
+    // ctx.closePath();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 1)'; // Set outline color to black
+    ctx.lineWidth = 2; // Set outline thickness
+    ctx.setLineDash([5, 3]);
+    ctx.stroke();
+
+    // ctx.beginPath();
+    // ctx.moveTo(centerX, centerY);
+    // ctx.arc(centerX, centerY, randomRadius, startAngle, startAngle, counterClockwise);
+    // // ctx.closePath();
+    // ctx.strokeStyle = 'rgba(255, 255, 255, 1)'; // Set outline color to black
+    // ctx.lineWidth = 2; // Set outline thickness
+    // ctx.setLineDash([1, 0]);
+    // ctx.stroke();
+
+    var xOuterStart = centerX + Math.cos(startAngle) * randomRadius;
+    var yOuterStart = centerY + Math.sin(startAngle) * randomRadius;
+    var xInnerStart = centerX + Math.cos(startAngle) * innerRadius;
+    var yInnerStart = centerY + Math.sin(startAngle) * innerRadius;
+
+    var xOuterEnd = centerX + Math.cos(endAngle) * randomRadius;
+    var yOuterEnd = centerY + Math.sin(endAngle) * randomRadius;
+    var xInnerEnd = centerX + Math.cos(endAngle) * innerRadius;
+    var yInnerEnd = centerY + Math.sin(endAngle) * innerRadius;
+
+    
+    ctx.beginPath();
+    ctx.moveTo(xInnerStart, yInnerStart);
+    ctx.lineTo(xOuterStart, yOuterStart);
+    ctx.moveTo(xInnerEnd, yInnerEnd);
+    ctx.lineTo(xOuterEnd, yOuterEnd);
+    ctx.setLineDash([1, 0]);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // ctx.beginPath();
+    // ctx.moveTo(centerX, centerY);
+    // ctx.arc(centerX, centerY, randomRadius, endAngle, endAngle, counterClockwise);
+    // // ctx.closePath();
+    // ctx.strokeStyle = 'rgba(255, 255, 255, 1)'; // Set outline color to black
+    // ctx.lineWidth = 2; // Set outline thickness
+    // ctx.setLineDash([1, 0]);
+    // ctx.stroke();
+  }
+
   ctx.fillStyle = 'black'; // Set the fill color to white
   ctx.beginPath();
   ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
-  ctx.fill();
+  // ctx.fill();
   ctx.strokeStyle = 'white';
   ctx.lineWidth = 3;
   ctx.setLineDash([1, 0]);
