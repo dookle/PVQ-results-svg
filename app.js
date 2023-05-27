@@ -138,6 +138,10 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+function randomScore() {
+  return Math.floor(Math.random() * 91) + 10;
+}
+
 function generateSvg(inputs) {
 
   const size = 500;
@@ -145,59 +149,37 @@ function generateSvg(inputs) {
   const ctx = canvas.getContext("2d");
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
+  const innerRadius = 36;
 
-  slice(0, '#FF6CA2', inputs[0])
-  slice(1, '#A1B5C0', inputs[1])
-  slice(2, '#F99C73', inputs[2])
-  slice(3, '#B877D5', inputs[3])
-  slice(4, '#60CBFF', inputs[4])
-  slice(5, '#233748', inputs[5])
-  slice(6, '#FFD766', inputs[6])
-  slice(7, '#49D7BD', inputs[7])
-  slice(8, '#F9ABA7', inputs[8])
-  slice(9, '#6C9DFC', inputs[9])
-
-  // #FFB3D1 (Cotton Candy Pink)
-  // #AEC6CF (Minty Blue)
-  // #FFD8B1 (Peach Sorbet)
-  // #D5A6BD (Lavender Mist)
-  // #B3E6E6 (Baby Blue)
-  // #FFCC99 (Apricot)
-  // #C7E0B8 (Pistachio)
-  // #F2C6DE (Bubblegum)
-  // #FFEDB3 (Buttercream)
-  // #D9C6E1 (Lilac)
-
-  // #FF88AA
-  // #7EDDEA
-  // #FF9F6B
-  // #6D7D7D
-  // #87DFFF
-  // #233748
-  // #9DE99E
-  // #F77AC0
-  // #FFDC6B
-  // #B993DA
+  slice(0, '#FF6CA2', parseInt(inputs[0]))
+  slice(1, '#A1B5C0', parseInt(inputs[1]))
+  slice(2, '#F99C73', parseInt(inputs[2]))
+  slice(3, '#B877D5', parseInt(inputs[3]))
+  slice(4, '#60CBFF', parseInt(inputs[4]))
+  slice(5, '#233748', parseInt(inputs[5]))
+  slice(6, '#FFD766', parseInt(inputs[6]))
+  slice(7, '#49D7BD', parseInt(inputs[7]))
+  slice(8, '#F9ABA7', parseInt(inputs[8]))
+  slice(9, '#6C9DFC', parseInt(inputs[9]))
 
   function slice(index, colour, score) {
-
-    let radius = ((score/100) * (size/2 - 10));;
+    let radius = ((score/100) * ((size - (2*innerRadius))/2)) + innerRadius;
     let maxRadius = (size/2 - 10);;
     let counterClockwise = false;
     let startAngleBlue = ((index-1) / 10) * Math.PI * 2;
     let endAngleBlue = (index / 10) * Math.PI * 2;
 
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
     ctx.arc(centerX, centerY, radius, startAngleBlue, endAngleBlue, counterClockwise);
+    ctx.arc(centerX, centerY, innerRadius, endAngleBlue, startAngleBlue, !counterClockwise);
     ctx.closePath();
     ctx.fillStyle = colour;
     ctx.fill();
 
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, radius - 20, startAngleBlue, endAngleBlue, counterClockwise);
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.moveTo(centerX, centerY);
+    // ctx.arc(centerX, centerY, radius, startAngleBlue, endAngleBlue, counterClockwise);
+    // ctx.closePath();
     
     // ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     // ctx.fill();
@@ -206,16 +188,15 @@ function generateSvg(inputs) {
     ctx.lineWidth = 2; // Set outline thickness
     
     ctx.beginPath();
-    if (index % 2 == 0) {ctx.arc(centerX, centerY, radius + 20, startAngleBlue, endAngleBlue, counterClockwise);}
-    else {ctx.arc(centerX, centerY, radius - 20, startAngleBlue, endAngleBlue, counterClockwise);}
+    ctx.arc(centerX, centerY, (((randomScore()/100) * ((size - (2*innerRadius))/2)) + innerRadius), startAngleBlue, endAngleBlue, counterClockwise);
     ctx.setLineDash([5, 3]);
     ctx.stroke();
     ctx.closePath();
 
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, maxRadius, startAngleBlue, endAngleBlue, counterClockwise);
-    ctx.closePath();
+    // ctx.beginPath();
+    // ctx.moveTo(centerX, centerY);
+    // ctx.arc(centerX, centerY, maxRadius, startAngleBlue, endAngleBlue, counterClockwise);
+    // ctx.closePath();
     // ctx.setLineDash([1, 0]);
     // ctx.strokeStyle = 'lightgrey';
     // ctx.lineWidth = size/200;
@@ -236,7 +217,7 @@ function generateSvg(inputs) {
 
   ctx.fillStyle = 'black'; // Set the fill color to white
   ctx.beginPath();
-  ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
+  ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
   ctx.fill();
   ctx.strokeStyle = 'white';
   ctx.lineWidth = 3;
