@@ -4,6 +4,45 @@ const express = require('express')
 const app = express()
 const port = 80
 
+app.get('/random', (req, res) => {
+
+  const inputs = Array.from({ length: 10 }, () => Math.floor(Math.random() * 91) + 10);
+
+  const svg = generateSvg(inputs);
+
+
+  res.send(`
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVQ Retult</title>
+</head>
+<body>
+${svg}
+</body>
+</html>
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+    }
+</style>
+`);
+
+});
+
 app.get('/results/:param1/:param2/:param3/:param4/:param5/:param6/:param7/:param8/:param9/:param10', (req, res) => {
 
   const inputs = Object.values(req.params);
@@ -93,9 +132,39 @@ app.get('/', (req, res) => {
       font-size: 16px;
     }
 
+    #random {
+      // background-color: #4CAF50;
+      float: right;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
     button[type="submit"]:hover {
       background-color: #45a049;
     }
+
+    .rainbow-button {
+      display: inline-block;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
+      background-size: 1000% 1000%;
+      transition: background-position 2s;
+      cursor: pointer;
+    }
+
+    .rainbow-button:hover {
+      background-position: 100% 100%;
+    }
+
   </style>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -119,6 +188,11 @@ app.get('/', (req, res) => {
         window.location.href = url;
       });
     });
+
+    function redirectToRandom(event) {
+      event.preventDefault(); // Prevent the default behavior of the button
+      window.location.href = '/random'; // Redirect to the '/random' URL
+    }
   </script>
 </head>
 <body>
@@ -155,6 +229,7 @@ app.get('/', (req, res) => {
           <input type="number" name="pvq10" id="pvq10" min="0" max="100" required><br>
           <br>
           <button type="submit">Submit</button>
+          <button class="rainbow-button" onclick="redirectToRandom(event)" id="random">RANDOM</button>
         </form>
       </body>
       </html>
@@ -302,7 +377,7 @@ function generateSvg(inputs) {
     ctx.lineTo(xOuterEnd, yOuterEnd);
     ctx.setLineDash([1, 0]);
     ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = size/200;
     ctx.stroke();
 
     // ctx.beginPath();
